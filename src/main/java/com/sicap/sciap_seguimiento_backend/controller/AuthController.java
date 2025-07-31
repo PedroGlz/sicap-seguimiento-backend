@@ -33,6 +33,7 @@ public class AuthController {
             // Armar respuesta
             LoginResponse response = new LoginResponse();
             response.setIdUsuario(usuario.getIdUsuario());
+            response.setNombre(usuario.getNombre());
             response.setNombreCompleto(usuario.getNombre() + " " +
                     usuario.getApellidoPaterno() + " " +
                     usuario.getApellidoMaterno());

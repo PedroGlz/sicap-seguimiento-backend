@@ -2,6 +2,7 @@ package com.sicap.sciap_seguimiento_backend.dto;
 
 public class LoginResponse {
     private Long idUsuario;
+    private String nombre;
     private String nombreCompleto;
     private String numeroEmpleado;
     private String usuario;
@@ -17,6 +18,10 @@ public class LoginResponse {
     public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+    public String getNombre() { return nombre; }
+
+    public void setNombre(String nombre) {this.nombre = nombre;}
 
     public String getNombreCompleto() {
         return nombreCompleto;
@@ -73,4 +78,5 @@ public class LoginResponse {
     public void setCostoPorHora(Double costoPorHora) {
         this.costoPorHora = costoPorHora;
     }
+
 }
