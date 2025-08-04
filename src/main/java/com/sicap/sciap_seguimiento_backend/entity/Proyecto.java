@@ -17,11 +17,18 @@ public class Proyecto {
     @Column(name = "id_proyecto")
     private Integer idProyecto;
 
+    // Relación con Cliente
+    @ManyToOne(optional = true)
+    @JoinColumn(
+            name = "id_cliente",
+            referencedColumnName = "id_cliente",
+            nullable = true,
+            foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT)
+    )
+    private Cliente cliente;
+
     @Column(name = "nombre_proyecto")
     private String nombreProyecto;
-
-    @Column(name = "id_cliente")
-    private Integer idCliente;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;
@@ -50,6 +57,12 @@ public class Proyecto {
     @Column(name = "fecha_modificacion")
     private LocalDateTime fechaModificacion;
 
-    // Getters y setters
-    // ...
+    // Métodos para exponer nombre_cliente y ubicacion
+    public String getNombreCliente() {
+        return cliente != null ? cliente.getNombreCliente() : null;
+    }
+
+    public String getUbicacionCliente() {
+        return cliente != null ? cliente.getUbicacion() : null;
+    }
 }
