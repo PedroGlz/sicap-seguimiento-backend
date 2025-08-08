@@ -5,12 +5,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "usuarios")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +59,16 @@ public class Usuario {
 
     @Column(name = "costo_por_hora")
     private Double costoPorHora;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Por simplicidad, asignamos un rol fijo. Aquí podrías mapear idTipoUsuario a roles reales.
+        return Collections.singleton(() -> "ROLE_USER");
+    }
+
+    @Override
+    public String getUsername() {
+        return usuario;  // el campo usuario es el username para login
+    }
 
 }

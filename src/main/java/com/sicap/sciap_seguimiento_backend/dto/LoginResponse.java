@@ -10,6 +10,7 @@ public class LoginResponse {
     private String telefono;
     private Long idTipoUsuario;
     private Double costoPorHora;
+    private String token;
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -77,6 +78,14 @@ public class LoginResponse {
 
     public void setCostoPorHora(Double costoPorHora) {
         this.costoPorHora = costoPorHora;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
 }

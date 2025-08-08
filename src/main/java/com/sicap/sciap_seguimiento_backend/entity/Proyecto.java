@@ -40,7 +40,7 @@ public class Proyecto {
     private String po;
 
     @Column(name = "usuario_creador")
-    private Integer usuarioCreador;
+    private Long usuarioCreador;
 
     @Column(name = "orden")
     private Integer orden;

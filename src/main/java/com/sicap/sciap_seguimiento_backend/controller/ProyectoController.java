@@ -1,13 +1,17 @@
 package com.sicap.sciap_seguimiento_backend.controller;
 
 import com.sicap.sciap_seguimiento_backend.entity.Proyecto;
+import com.sicap.sciap_seguimiento_backend.entity.Usuario;
 import com.sicap.sciap_seguimiento_backend.service.ProyectoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.sicap.sciap_seguimiento_backend.entity.Usuario;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/proyectos")
 public class ProyectoController {
@@ -29,7 +33,8 @@ public class ProyectoController {
 
     @PostMapping
     public Proyecto crear(@RequestBody Proyecto proyecto) {
-        return proyectoService.guardar(proyecto);
+        Long usuarioId = obtenerUsuarioLogueado(); // Implementa según tu seguridad
+        return proyectoService.crearProyecto(proyecto, usuarioId);
     }
 
     @PutMapping("/{id}")
@@ -47,5 +52,11 @@ public class ProyectoController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private Long obtenerUsuarioLogueado() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Usuario usuario = (Usuario) auth.getPrincipal();
+        return usuario.getIdUsuario();
     }
 }
