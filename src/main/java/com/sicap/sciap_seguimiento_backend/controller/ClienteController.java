@@ -21,7 +21,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> obtenerPorId(@PathVariable Integer id) {
+    public ResponseEntity<Cliente> obtenerPorId(@PathVariable long id) {
         return clienteService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -33,7 +33,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> actualizar(@PathVariable Integer id, @RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> actualizar(@PathVariable long id, @RequestBody Cliente cliente) {
         return clienteService.obtenerPorId(id).map(c -> {
             cliente.setIdCliente(id);
             return ResponseEntity.ok(clienteService.guardar(cliente));
@@ -41,7 +41,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<Void> eliminar(@PathVariable long id) {
         if (clienteService.obtenerPorId(id).isPresent()) {
             clienteService.eliminar(id);
             return ResponseEntity.noContent().build();

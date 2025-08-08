@@ -1,16 +1,22 @@
 package com.sicap.sciap_seguimiento_backend.controller;
 
+import com.sicap.sciap_seguimiento_backend.dto.ProyectoDTO;
+import com.sicap.sciap_seguimiento_backend.entity.Cliente;
 import com.sicap.sciap_seguimiento_backend.entity.Proyecto;
 import com.sicap.sciap_seguimiento_backend.entity.Usuario;
+import com.sicap.sciap_seguimiento_backend.service.ClienteService;
 import com.sicap.sciap_seguimiento_backend.service.ProyectoService;
+import com.sicap.sciap_seguimiento_backend.service.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.sicap.sciap_seguimiento_backend.entity.Usuario;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/proyectos")
@@ -18,6 +24,12 @@ public class ProyectoController {
 
     @Autowired
     private ProyectoService proyectoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     @GetMapping
     public List<Proyecto> obtenerTodos() {
@@ -32,9 +44,23 @@ public class ProyectoController {
     }
 
     @PostMapping
-    public Proyecto crear(@RequestBody Proyecto proyecto) {
-        Long usuarioId = obtenerUsuarioLogueado(); // Implementa según tu seguridad
-        return proyectoService.crearProyecto(proyecto, usuarioId);
+    public ResponseEntity<Proyecto> crear(@RequestBody ProyectoDTO proyectoDTO) {
+        Long usuarioId = obtenerUsuarioLogueado();
+
+        Proyecto proyecto = new Proyecto();
+        proyecto.setNombreProyecto(proyectoDTO.getNombreProyecto());
+        proyecto.setPo(proyectoDTO.getPo());
+        proyecto.setFechaInicio(proyectoDTO.getFechaInicio());
+        proyecto.setFechaFin(proyectoDTO.getFechaFin());
+
+        // Aquí deberás buscar el cliente por id y asignarlo
+        Cliente cliente = clienteService.obtenerPorId(proyectoDTO.getIdCliente())
+                .orElse(null);
+        proyecto.setCliente(cliente);
+
+        Proyecto proyectoCreado = proyectoService.crearProyecto(proyecto, usuarioId);
+
+        return ResponseEntity.ok(proyectoCreado);
     }
 
     @PutMapping("/{id}")
@@ -56,7 +82,24 @@ public class ProyectoController {
 
     private Long obtenerUsuarioLogueado() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Usuario usuario = (Usuario) auth.getPrincipal();
+        Object principal = auth.getPrincipal();
+
+        String username = null;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else if (principal instanceof String) {
+            username = (String) principal;
+        }
+
+        if (username == null) {
+            throw new RuntimeException("Usuario no autenticado");
+        }
+
+        Usuario usuario = usuarioService.findByUsername(username);
+        if (usuario == null) {
+            throw new RuntimeException("Usuario no encontrado en base de datos");
+        }
         return usuario.getIdUsuario();
     }
 }
