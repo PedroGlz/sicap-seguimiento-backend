@@ -24,7 +24,7 @@ public class ProyectoService {
         proyecto.setActivo("1");
         LocalDateTime ahora = LocalDateTime.now();
         proyecto.setFechaCreacion(ahora);
-        //proyecto.setFechaModificacion(ahora);
+
         return proyectoRepository.save(proyecto);
     }
 
@@ -37,6 +37,9 @@ public class ProyectoService {
     }
 
     public Proyecto guardar(Proyecto proyecto) {
+        LocalDateTime ahora = LocalDateTime.now();
+        proyecto.setFechaModificacion(ahora);
+
         return proyectoRepository.save(proyecto);
     }
 

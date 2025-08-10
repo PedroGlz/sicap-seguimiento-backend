@@ -50,8 +50,6 @@ public class ProyectoController {
         Proyecto proyecto = new Proyecto();
         proyecto.setNombreProyecto(proyectoDTO.getNombreProyecto());
         proyecto.setPo(proyectoDTO.getPo());
-        proyecto.setFechaInicio(proyectoDTO.getFechaInicio());
-        proyecto.setFechaFin(proyectoDTO.getFechaFin());
 
         // Aquí deberás buscar el cliente por id y asignarlo
         Cliente cliente = clienteService.obtenerPorId(proyectoDTO.getIdCliente())
@@ -64,10 +62,17 @@ public class ProyectoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Proyecto> actualizar(@PathVariable Integer id, @RequestBody Proyecto proyecto) {
+    public ResponseEntity<Proyecto> actualizar(@PathVariable Integer id, @RequestBody ProyectoDTO proyectoDTO) {
         return proyectoService.obtenerPorId(id).map(p -> {
-            proyecto.setIdProyecto(id);
-            return ResponseEntity.ok(proyectoService.guardar(proyecto));
+            p.setNombreProyecto(proyectoDTO.getNombreProyecto());
+            p.setPo(proyectoDTO.getPo());
+
+            // Asignar solo el idCliente
+            Cliente cliente = clienteService.obtenerPorId(proyectoDTO.getIdCliente())
+                    .orElse(null);
+            p.setCliente(cliente);
+
+            return ResponseEntity.ok(proyectoService.guardar(p));
         }).orElse(ResponseEntity.notFound().build());
     }
 
