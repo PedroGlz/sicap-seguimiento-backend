@@ -22,7 +22,7 @@ public class ActividadService {
     }
 
     public List<Actividad> findByGrupoId(Integer idGrupo) {
-        return actividadRepository.findByGrupo_IdGrupo(idGrupo);
+        return actividadRepository.findByGrupo_IdGrupoOrderByNombreActividadAsc(idGrupo);
     }
 
     public Actividad save(Actividad actividad) {

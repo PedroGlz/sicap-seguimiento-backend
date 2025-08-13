@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ActividadRepository extends JpaRepository<Actividad, Integer> {
-    List<Actividad> findByGrupo_IdGrupo(Integer idGrupo);
+    List<Actividad> findByGrupo_IdGrupoOrderByNombreActividadAsc(Integer idGrupo);
 }
