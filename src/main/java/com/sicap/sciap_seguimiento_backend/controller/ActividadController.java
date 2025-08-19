@@ -1,8 +1,10 @@
 package com.sicap.sciap_seguimiento_backend.controller;
 
+import com.sicap.sciap_seguimiento_backend.dto.ActividadDTO;
 import com.sicap.sciap_seguimiento_backend.entity.Actividad;
 import com.sicap.sciap_seguimiento_backend.service.ActividadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,9 +26,14 @@ public class ActividadController {
         return actividadService.findById(id);
     }
 
+    @GetMapping("/{idGrupo}/actividades")
+    public ResponseEntity<List<ActividadDTO>> getActividades(@PathVariable Long idGrupo) {
+        return ResponseEntity.ok(actividadService.getActividadesPorGrupo(idGrupo));
+    }
+
     @GetMapping("/grupo/{idGrupo}")
-    public List<Actividad> getByGrupo(@PathVariable Integer idGrupo) {
-        return actividadService.findByGrupoId(idGrupo);
+    public List<ActividadDTO> getActividadesByGrupo(@PathVariable Long idGrupo) {
+        return actividadService.getActividadesPorGrupo(idGrupo);
     }
 
     @PostMapping

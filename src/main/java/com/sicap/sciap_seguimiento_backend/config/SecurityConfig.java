@@ -68,6 +68,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/proyectos/**").authenticated()
+                        .requestMatchers("/api/actividades/**").authenticated()
                         .requestMatchers("/api/clientes/**").authenticated()
                         .requestMatchers("/api/grupos/**").authenticated()
                         .anyRequest().authenticated()

@@ -1,5 +1,6 @@
 package com.sicap.sciap_seguimiento_backend.controller;
 
+import com.sicap.sciap_seguimiento_backend.dto.ActividadDTO;
 import com.sicap.sciap_seguimiento_backend.dto.ProyectoDTO;
 import com.sicap.sciap_seguimiento_backend.entity.Cliente;
 import com.sicap.sciap_seguimiento_backend.entity.Proyecto;
@@ -7,7 +8,6 @@ import com.sicap.sciap_seguimiento_backend.entity.Usuario;
 import com.sicap.sciap_seguimiento_backend.service.ClienteService;
 import com.sicap.sciap_seguimiento_backend.service.ProyectoService;
 import com.sicap.sciap_seguimiento_backend.service.UsuarioService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
